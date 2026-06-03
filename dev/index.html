@@ -22,53 +22,8 @@
 
         <div class="panel">
             <h2 class="section-title">Endprodukte wählen</h2>
-            <div class="item-select-group">
-
-                <div class="category-header">Teile & Terminals</div>
-                <div class="input-row">
-                    <label><i class="fa-solid fa-microchip" style="color: #38bdf8;"></i> Chipsatz</label>
-                    <input type="number" min="0" value="0" data-item="chipsatz" oninput="calculateTotal()">
+            <div id="inputItemsContainer" class="item-select-group">
                 </div>
-                <div class="input-row">
-                    <label><i class="fa-solid fa-terminal" style="color: #a855f7;"></i> Lagerterminal</label>
-                    <input type="number" min="0" value="0" data-item="lagerterminal" oninput="calculateTotal()">
-                </div>
-
-                <div class="category-header">Speicherkarten (Von Grund auf)</div>
-                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 1</label><input type="number" min="0" value="0" data-item="speicherkarte1" oninput="calculateTotal()"></div>
-                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 2</label><input type="number" min="0" value="0" data-item="speicherkarte2" oninput="calculateTotal()"></div>
-                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 3</label><input type="number" min="0" value="0" data-item="speicherkarte3" oninput="calculateTotal()"></div>
-                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 4</label><input type="number" min="0" value="0" data-item="speicherkarte4" oninput="calculateTotal()"></div>
-                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 5</label><input type="number" min="0" value="0" data-item="speicherkarte5" oninput="calculateTotal()"></div>
-                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 6</label><input type="number" min="0" value="0" data-item="speicherkarte6" oninput="calculateTotal()"></div>
-                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 7</label><input type="number" min="0" value="0" data-item="speicherkarte7" oninput="calculateTotal()"></div>
-                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 8</label><input type="number" min="0" value="0" data-item="speicherkarte8" oninput="calculateTotal()"></div>
-
-                <div class="category-header">Rubinhändler (50 Rubine)</div>
-                <div class="input-row">
-                    <label><i class="fa-solid fa-gem" style="color: #ef4444;"></i> Rubinhändler Komplett-Set</label>
-                    <input type="number" min="0" value="0" data-item="rubinhaendler" oninput="calculateTotal()">
-                </div>
-
-                <div class="category-header">Lootdealer Items</div>
-                <div class="input-row">
-                    <label><i class="fa-solid fa-frog" style="color: #4ade80;"></i> Frosch Totem (Faktor x4)</label>
-                    <input type="number" min="0" value="0" data-item="frosch_totem" oninput="calculateTotal()">
-                </div>
-                <div class="input-row">
-                    <label><i class="fa-solid fa-mobile-screen-button" style="color: #f472b6;"></i> Uwu Phone (Faktor x8)</label>
-                    <input type="number" min="0" value="0" data-item="uwu_phone" oninput="calculateTotal()">
-                </div>
-                <div class="input-row">
-                    <label><i class="fa-solid fa-mask" style="color: #fb923c;"></i> Warden Flughelm (Faktor x18)</label>
-                    <input type="number" min="0" value="0" data-item="warden_flughelm" oninput="calculateTotal()">
-                </div>
-                <div class="input-row">
-                    <label><i class="fa-solid fa-crown" style="color: #eab308;"></i> Wisp Krone (Faktor x36 + Oxid. Kupfer)</label>
-                    <input type="number" min="0" value="0" data-item="wisp_krone" oninput="calculateTotal()">
-                </div>
-
-            </div>
         </div>
 
         <div class="panel sticky-panel">
@@ -88,12 +43,12 @@
             </div>
         </div>
 
-	</main>
+    </main>
 
     <footer class="footer">
         <div class="footer-container">
             <h4>Phoenixmagie<span>.</span></h4>
-            <p>Hochwertige Tools für Primeblocks direkt in Browser!</p>
+            <p>Ein ambitioniertes Projekt für Gamer und Entwickler. Erschaffe Profile, chatte und zocke direkt im Browser.</p>
         </div>
         <div class="footer-bottom">
             <p>&copy; 2026 Phoenixmagie. Alle Rechte vorbehalten. Designed mit <i class="fa-solid fa-heart" style="color: var(--accent-color);"></i></p>

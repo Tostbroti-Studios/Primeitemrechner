@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primeblocks | Ressourcen-Rechner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#" class="logo">Prime Item Rechner<span>.</span></a>
+    </nav>
+
+    <header class="hero">
+        <h1>Primeblocks <span>Ressourcen-Rechner</span></h1>
+        <p>Gib einfach die gewünschte Menge der Endprodukte ein. Das System zerlegt alle komplexen Rezepte vollautomatisch in ihre absoluten Basismaterialien und berechnet die benötigten Minecraft-Stacks.</p>
+    </header>
+
+    <main class="calculator-container">
+
+        <div class="panel">
+            <h2 class="section-title">Endprodukte wählen</h2>
+            <div class="item-select-group">
+
+                <div class="category-header">Teile & Terminals</div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-microchip" style="color: #38bdf8;"></i> Chipsatz</label>
+                    <input type="number" min="0" value="0" data-item="chipsatz" oninput="calculateTotal()">
+                </div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-terminal" style="color: #a855f7;"></i> Lagerterminal</label>
+                    <input type="number" min="0" value="0" data-item="lagerterminal" oninput="calculateTotal()">
+                </div>
+
+                <div class="category-header">Speicherkarten (Von Grund auf)</div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 1</label><input type="number" min="0" value="0" data-item="speicherkarte1" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 2</label><input type="number" min="0" value="0" data-item="speicherkarte2" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 3</label><input type="number" min="0" value="0" data-item="speicherkarte3" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 4</label><input type="number" min="0" value="0" data-item="speicherkarte4" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 5</label><input type="number" min="0" value="0" data-item="speicherkarte5" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 6</label><input type="number" min="0" value="0" data-item="speicherkarte6" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 7</label><input type="number" min="0" value="0" data-item="speicherkarte7" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 8</label><input type="number" min="0" value="0" data-item="speicherkarte8" oninput="calculateTotal()"></div>
+
+                <div class="category-header">Rubinhändler (50 Rubine)</div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-gem" style="color: #ef4444;"></i> Rubinhändler Komplett-Set</label>
+                    <input type="number" min="0" value="0" data-item="rubinhaendler" oninput="calculateTotal()">
+                </div>
+
+                <div class="category-header">Lootdealer Items</div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-frog" style="color: #4ade80;"></i> Frosch Totem (Faktor x4)</label>
+                    <input type="number" min="0" value="0" data-item="frosch_totem" oninput="calculateTotal()">
+                </div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-mobile-screen-button" style="color: #f472b6;"></i> Uwu Phone (Faktor x8)</label>
+                    <input type="number" min="0" value="0" data-item="uwu_phone" oninput="calculateTotal()">
+                </div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-mask" style="color: #fb923c;"></i> Warden Flughelm (Faktor x18)</label>
+                    <input type="number" min="0" value="0" data-item="warden_flughelm" oninput="calculateTotal()">
+                </div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-crown" style="color: #eab308;"></i> Wisp Krone (Faktor x36 + Oxid. Kupfer)</label>
+                    <input type="number" min="0" value="0" data-item="wisp_krone" oninput="calculateTotal()">
+                </div>
+
+            </div>
+        </div>
+
+        <div class="panel sticky-panel">
+            <h2 class="section-title">Benötigte Basismaterialien</h2>
+            
+            <div class="action-buttons">
+                <button onclick="resetAll()" class="btn btn-reset">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Zurücksetzen
+                </button>
+                <button onclick="copyToClipboard()" class="btn btn-copy">
+                    <i class="fa-solid fa-copy"></i> Liste kopieren
+                </button>
+            </div>
+
+            <div id="resultsContainer" class="results-box">
+                <div class="empty-notice">Gib links Mengen ein, um die Berechnung zu starten.</div>
+            </div>
+        </div>
+
+	</main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <h4>Phoenixmagie<span>.</span></h4>
+            <p>Hochwertige Tools für Primeblocks direkt in Browser!</p>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Phoenixmagie. Alle Rechte vorbehalten. Designed mit <i class="fa-solid fa-heart" style="color: var(--accent-color);"></i></p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

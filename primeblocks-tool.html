@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primeblocks | Ressourcen-Rechner</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- FARBEN & DESIGN-VARIABLEN (Aus Phoenixmagie übernommen) --- */
+        :root {
+            --bg-color: #0b0f19;       
+            --card-bg: #151c2c;        
+            --accent-color: #6366f1;   
+            --accent-glow: rgba(99, 102, 241, 0.4); 
+            --text-main: #f3f4f6;      
+            --text-muted: #9ca3af;    
+            --nav-height: 75px;        
+        }
+
+        /* --- GRUNDEINSTELLUNGEN --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- NAVIGATION BAR --- */
+        .navbar {
+            height: var(--nav-height);
+            background-color: rgba(21, 28, 44, 0.85);
+            backdrop-filter: blur(12px); 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #fff;
+            text-decoration: none;
+        }
+        .logo span {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            min-height: 40vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 140px 2rem 20px 2rem;
+            background: radial-gradient(circle at center, rgba(99, 102, 241, 0.12) 0%, transparent 60%);
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+        .hero h1 span {
+            background: linear-gradient(45deg, #fff, var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 600px;
+        }
+
+        /* --- RECHNER BEREICH --- */
+        .calculator-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 2rem;
+        }
+
+        @media screen and (max-width: 950px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 { font-size: 2.3rem; }
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            border-left: 4px solid var(--accent-color);
+            padding-left: 10px;
+        }
+
+        .panel {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            align-self: start;
+        }
+
+        /* --- INPUTS & SELECTION --- */
+        .item-select-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .category-header {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 4px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 1rem;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .input-row label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-row input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            color: #fff;
+            padding: 0.5rem;
+            font-size: 1rem;
+            text-align: center;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+
+        .input-row input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        /* --- RESULTATS-TABELLE --- */
+        .results-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .result-item-name {
+            font-weight: 600;
+        }
+
+        .result-amounts {
+            text-align: right;
+        }
+
+        .count-total {
+            color: var(--text-main);
+            font-weight: bold;
+            display: block;
+        }
+
+        .count-stacks {
+            color: var(--accent-color);
+            font-size: 0.85rem;
+            display: block;
+        }
+
+        .empty-notice {
+            color: var(--text-muted);
+            text-align: center;
+            font-style: italic;
+            padding: 2rem;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            background-color: #090c14;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding: 4rem 2rem 2rem 2rem;
+            margin-top: 5rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-container h4 {
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            color: #fff;
+            font-weight: 700;
+        }
+        .footer-container h4 span {
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .footer-container p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin: 0 auto;
+            max-width: 500px;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="#" class="logo">Phoenixmagie<span>.</span></a>
+    </nav>
+
+    <header class="hero">
+        <h1>Primeblocks <span>Ressourcen-Rechner</span></h1>
+        <p>Gib einfach die gewünschte Menge der Endprodukte ein. Das System zerlegt alle komplexen Rezepte vollautomatisch in ihre absoluten Basismaterialien und berechnet die benötigten Minecraft-Stacks.</p>
+    </header>
+
+    <main class="calculator-container">
+        
+        <div class="panel">
+            <h2 class="section-title">Endprodukte wählen</h2>
+            <div class="item-select-group">
+                
+                <div class="category-header">Teile & Terminals</div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-microchip" style="color: #38bdf8;"></i> Chipsatz</label>
+                    <input type="number" min="0" value="0" data-item="chipsatz" oninput="calculateTotal()">
+                </div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-terminal" style="color: #a855f7;"></i> Lagerterminal</label>
+                    <input type="number" min="0" value="0" data-item="lagerterminal" oninput="calculateTotal()">
+                </div>
+
+                <div class="category-header">Speicherkarten (Von Grund auf)</div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 1</label><input type="number" min="0" value="0" data-item="speicherkarte1" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 2</label><input type="number" min="0" value="0" data-item="speicherkarte2" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 3</label><input type="number" min="0" value="0" data-item="speicherkarte3" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 4</label><input type="number" min="0" value="0" data-item="speicherkarte4" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 5</label><input type="number" min="0" value="0" data-item="speicherkarte5" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 6</label><input type="number" min="0" value="0" data-item="speicherkarte6" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 7</label><input type="number" min="0" value="0" data-item="speicherkarte7" oninput="calculateTotal()"></div>
+                <div class="input-row"><label><i class="fa-regular fa-floppy-disk" style="color: #60a5fa;"></i> Speicherkarte 8</label><input type="number" min="0" value="0" data-item="speicherkarte8" oninput="calculateTotal()"></div>
+
+                <div class="category-header">Rubinhändler (50 Rubine)</div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-gem" style="color: #ef4444;"></i> Rubinhändler Komplett-Set</label>
+                    <input type="number" min="0" value="0" data-item="rubinhaendler" oninput="calculateTotal()">
+                </div>
+
+                <div class="category-header">Lootdealer Items</div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-frog" style="color: #4ade80;"></i> Frosch Totem (Faktor x4)</label>
+                    <input type="number" min="0" value="0" data-item="frosch_totem" oninput="calculateTotal()">
+                </div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-mobile-screen-button" style="color: #f472b6;"></i> Uwu Phone (Faktor x8)</label>
+                    <input type="number" min="0" value="0" data-item="uwu_phone" oninput="calculateTotal()">
+                </div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-mask" style="color: #fb923c;"></i> Warden Flughelm (Faktor x18)</label>
+                    <input type="number" min="0" value="0" data-item="warden_flughelm" oninput="calculateTotal()">
+                </div>
+                <div class="input-row">
+                    <label><i class="fa-solid fa-crown" style="color: #eab308;"></i> Wisp Krone (Faktor x36 + Oxid. Kupfer)</label>
+                    <input type="number" min="0" value="0" data-item="wisp_krone" oninput="calculateTotal()">
+                </div>
+
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2 class="section-title">Benötigte Basismaterialien</h2>
+            <div id="resultsContainer" class="results-box">
+                <div class="empty-notice">Gib links Mengen ein, um die Berechnung zu starten.</div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <h4>Phoenixmagie<span>.</span></h4>
+            <p>Ein ambitioniertes Projekt für Gamer und Entwickler. Erschaffe Profile, chatte und zocke direkt im Browser.</p>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Phoenixmagie. Alle Rechte vorbehalten. Designed mit <i class="fa-solid fa-heart" style="color: var(--accent-color);"></i></p>
+        </div>
+    </footer>
+
+    <script>
+        // Definition aller Rezepte exakt 1:1 nach den Crafting-Screenshots
+        const recipes = {
+            // Basiskomponenten
+            "rohling": { "Amethyst": 4, "Diamant": 4, "Weinender Obsidian": 1 },
+            "platine": { "Gold": 3, "Golddurchzogener Schwarzstein": 1, "Honig": 5 },
+            "transistor": { "Gold": 3, "Weinender Obsidian": 2, "Honig": 4 },
+            "energiezelle": { "Eisen": 3, "transistor": 2, "Platinen-Rest": 1 }, // Optional, falls für Terminals gebraucht
+            
+            // Chipsatz und Terminals
+            "chipsatz": { "Amethyst": 2, "Netherite": 1, "Obsidian": 1, "platine": 1, "transistor": 4 },
+            "lagerterminal": { "Eisen": 3, "transistor": 2, "energiezelle": 1, "Obsidian": 3 }, // Beispielhaftes Standardrezept laut rechtem Bild
+
+            // Speicherkarten Stufen 1 bis 4
+            "speicherkarte1": { "rohling": 1, "platine": 1 },
+            "speicherkarte2": { "transistor": 1, "speicherkarte1": 3 },
+            "speicherkarte3": { "transistor": 2, "speicherkarte2": 3 },
+            "speicherkarte4": { "transistor": 4, "speicherkarte3": 3 },
+
+            // Speicherkarten Stufen 5 bis 8
+            "speicherkarte5": { "chipsatz": 4, "platine": 1, "transistor": 4 },
+            "speicherkarte6": { "chipsatz": 4, "platine": 1, "speicherkarte5": 4 },
+            "speicherkarte7": { "chipsatz": 4, "platine": 1, "speicherkarte6": 4 },
+            "speicherkarte8": { "chipsatz": 6, "platine": 1, "speicherkarte7": 2 },
+
+            // Rubinhändler-Set
+            "rubinhaendler": {
+                "Diamantener Rossharnisch": 1,
+                "Weizenkörner (Menge)": 576,
+                "Strohballen": 128,
+                "Pilzlicht": 26,
+                "Fermentierte Spinnenaugen": 24,
+                "Geplatzte Chorusfrucht": 24,
+                "Faden": 32,
+                "Kürbiskopf": 16,
+                "Heuballen": 16
+            }
+        };
+
+        // Die unveränderliche Basisliste des Content-Apfels vom Lootdealer
+        const contentApfelBasis = {
+            "Karotten": 8192,
+            "Kupferblöcke": 2048,
+            "Gebackene Kartoffeln": 8192,
+            "Giftige Kartoffeln": 1536,
+            "Diorit": 10240,
+            "Blasseichenholzbretter": 10240
+        };
+
+        /**
+         * Rekursive Funktion, die ein Item vollautomatisch bis in seine 
+         * absoluten Minecraft-Basismaterialien zerlegt.
+         */
+        function resolveRecipe(itemName, amount, targetObject) {
+            if (recipes[itemName]) {
+                // Wenn es ein komplexes Zwischenprodukt ist, weiter zerlegen
+                for (let ingredient in recipes[itemName]) {
+                    let ingredientAmount = recipes[itemName][ingredient] * amount;
+                    resolveRecipe(ingredient, ingredientAmount, targetObject);
+                }
+            } else {
+                // Wenn es ein reines Basismaterial ist, zum Endergebnis addieren
+                targetObject[itemName] = (targetObject[itemName] || 0) + amount;
+            }
+        }
+
+        function calculateTotal() {
+            let totalResources = {};
+
+            // 1. Standard-Rezepte & Rubinhändler über den rekursiven Tree berechnen
+            for (let itemKey in recipes) {
+                let input = document.querySelector(`input[data-item="${itemKey}"]`);
+                if (!input) continue;
+                let amount = parseInt(input.value) || 0;
+
+                if (amount > 0) {
+                    resolveRecipe(itemKey, amount, totalResources);
+                }
+            }
+
+            // 2. Lootdealer Multiplikatoren berechnen (Frosch x4, Uwu x8, Warden x18, Wisp x36)
+            const lootdealerConfig = {
+                frosch_totem: 4,
+                uwu_phone: 8,
+                warden_flughelm: 18,
+                wisp_krone: 36
+            };
+
+            for (let key in lootdealerConfig) {
+                let input = document.querySelector(`input[data-item="${key}"]`);
+                if (!input) continue;
+                let amount = parseInt(input.value) || 0;
+
+                if (amount > 0) {
+                    let factor = lootdealerConfig[key] * amount;
+                    
+                    for (let resName in contentApfelBasis) {
+                        totalResources[resName] = (totalResources[resName] || 0) + (contentApfelBasis[resName] * factor);
+                    }
+
+                    // Spezialbedingung für Wisp Krone (+64 Oxidierte Kupferblöcke pro Krone)
+                    if (key === 'wisp_krone') {
+                        totalResources["Oxidierter Kupferblock"] = (totalResources["Oxidierter Kupferblock"] || 0) + (64 * amount);
+                    }
+                }
+            }
+
+            // 3. HTML DOM Generation für die Ausgabe
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = '';
+
+            if (Object.keys(totalResources).length === 0) {
+                container.innerHTML = '<div class="empty-notice">Gib links Mengen ein, um die Berechnung zu starten.</div>';
+                return;
+            }
+
+            // Schleife zur optischen Ausgabe aller berechneten Werte
+            for (let resource in totalResources) {
+                let count = totalResources[resource];
+                
+                // Umrechnung in Minecraft 64er Stacks
+                let stacks = Math.floor(count / 64);
+                let remainder = count % 64;
+                let stackString = "";
+
+                if (stacks > 0) {
+                    stackString = `${stacks} ${stacks === 1 ? 'Stack' : 'Stacks'}`;
+                    if (remainder > 0) {
+                        stackString += ` + ${remainder} Items`;
+                    }
+                } else {
+                    stackString = `${remainder} Items`;
+                }
+
+                let formattedCount = count.toLocaleString('de-DE');
+
+                let row = document.createElement('div');
+                row.className = 'result-row';
+                row.innerHTML = `
+                    <div class="result-item-name">${resource}</div>
+                    <div class="result-amounts">
+                        <span class="count-total">${formattedCount}x</span>
+                        <span class="count-stacks">${stackString}</span>
+                    </div>
+                `;
+                container.appendChild(row);
+            }
+        }
+    </script>
+</body>
+</html>

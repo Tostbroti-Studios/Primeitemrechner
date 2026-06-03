@@ -10,7 +10,7 @@ const uiStructure = [
         ]
     },
     {
-        category: "Speicherkarten (Von Grund auf)",
+        category: "Speicherkarten",
         items: [
             { key: "speicherkarte1", label: "Speicherkarte A", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
             { key: "speicherkarte2", label: "Speicherkarte B", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
@@ -220,7 +220,7 @@ function copyToClipboard() {
     const rows = document.querySelectorAll('.result-row');
     if (rows.length === 0) return alert("Keine Materialien vorhanden!");
     
-    let text = "📋 **Benötigte Materialien:**\n";
+    let text = "📋 Benötigte Materialien:\n";
     rows.forEach(row => {
         text += `- ${row.querySelector('.result-item-name').innerText}: ${row.querySelector('.count-total').innerText} (${row.querySelector('.count-stacks').innerText})\n`;
     });

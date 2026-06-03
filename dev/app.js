@@ -25,7 +25,6 @@ const uiStructure = [
     {
         category: "Relikt System",
         items: [
-            { key: "relikt_fragment", label: "Reliktfragment", icon: "fa-solid fa-shredder", color: "#b45309" },
             { key: "gereinigtes_reliktfragment", label: "Gereinigtes Reliktfragment", icon: "fa-solid fa-dumpster-fire", color: "#f59e0b" },
             { key: "vergoldetes_reliktfragment", label: "Vergoldetes Reliktfragment", icon: "fa-solid fa-coins", color: "#fbbf24" },
             { key: "reliktscherbe", label: "Reliktscherbe", icon: "fa-solid fa-triangle-exclamation", color: "#6366f1" },
@@ -72,12 +71,15 @@ const recipes = {
     "speicherkarte8": { "chipsatz": 6, "platine": 1, "speicherkarte7": 2 },
 
 
-    "gereinigtes_reliktfragment": { "Lapislazuli": 8, "relikt_fragment": 1 }, 
-    "vergoldetes_reliktfragment": { "relikt_fragment": 8, "Rohgoldblock": 1 }, 
+    "gereinigtes_reliktfragment": { "Lapislazuli": 8, "Reliktfragment": 1 }, 
+   
+ "vergoldetes_reliktfragment": { "relikt_fragment": 8, "Rohgoldblock": 1 }, 
 
-    "reliktscherbe": { "relikt_fragment": 8, "Diamant": 1 },
-    "formloses_relikt": { "reliktscherbe": 4 }, 
-    "reliktaltar": { "Netherite Barren": 3, "formloses_relikt": 5, "Wirrholz": 1 },
+    "reliktscherbe": { "gereinigtes_reliktfragment": 8, "Diamant": 1 },
+    
+"formloses_relikt": { "reliktscherbe": 4 }, 
+   
+ "reliktaltar": { "Netherite Barren": 3, "formloses_relikt": 5, "Wirrholz": 1 },
 
     // --- Rubinhändler ---
     "rubinhaendler": {

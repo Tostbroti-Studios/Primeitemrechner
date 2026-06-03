@@ -116,13 +116,12 @@ body {
     align-self: start;
 }
 
-/* Sticky Upgrade für die rechte Spalte */
 .sticky-panel {
     position: sticky;
     top: calc(var(--nav-height) + 20px);
 }
 
-/* --- ACTION BUTTONS (NEU) --- */
+/* --- ACTION BUTTONS --- */
 .action-buttons {
     display: flex;
     gap: 10px;

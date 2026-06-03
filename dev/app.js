@@ -1,54 +1,130 @@
-// Definition aller Rezepte exakt nach Crafting-Rezepten
+// =========================================================================
+// 1. STRUKTUR DER BENUTZEROBERFLÄCHE (Hier neue UI-Inputs hinzu!)
+// =========================================================================
+const uiStructure = [
+    {
+        category: "Teile & Terminals",
+        items: [
+            { key: "chipsatz", label: "Chipsatz", icon: "fa-solid fa-microchip", color: "#38bdf8" },
+            { key: "lagerterminal", label: "Lagerterminal", icon: "fa-solid fa-terminal", color: "#a855f7" }
+        ]
+    },
+    {
+        category: "Speicherkarten (Von Grund auf)",
+        items: [
+            { key: "speicherkarte1", label: "Speicherkarte A", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte2", label: "Speicherkarte B", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte3", label: "Speicherkarte C", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte4", label: "Speicherkarte D", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte5", label: "Speicherkarte 1A", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte6", label: "Speicherkarte 1B", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte7", label: "Speicherkarte 1C", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte8", label: "Speicherkarte 1D", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" }
+        ]
+    },
+    {
+        category: "Relikt System",
+        items: [
+            { key: "relikt_fragment", label: "Reliktfragment", icon: "fa-solid fa-shredder", color: "#b45309" },
+            { key: "gereinigtes_reliktfragment", label: "Gereinigtes Reliktfragment", icon: "fa-solid fa-dumpster-fire", color: "#f59e0b" },
+            { key: "vergoldetes_reliktfragment", label: "Vergoldetes Reliktfragment", icon: "fa-solid fa-coins", color: "#fbbf24" },
+            { key: "reliktscherbe", label: "Reliktscherbe", icon: "fa-solid fa-triangle-exclamation", color: "#6366f1" },
+            { key: "formloses_relikt", label: "Formloses Relikt", icon: "fa-solid fa-circle", color: "#475569" },
+            { key: "reliktaltar", label: "Reliktaltar", icon: "fa-solid fa-box-tissue", color: "#14b8a6" }
+        ]
+    },
+    {
+        category: "Rubinhändler (50 Rubine)",
+        items: [
+            { key: "rubinhaendler", label: "Rubinhändler Komplett-Set", icon: "fa-solid fa-gem", color: "#ef4444" }
+        ]
+    },
+    {
+        category: "Lootdealer Items",
+        items: [
+            { key: "frosch_totem", label: "Frosch Totem (Faktor x4)", icon: "fa-solid fa-frog", color: "#4ade80" },
+            { key: "uwu_phone", label: "Uwu Phone (Faktor x8)", icon: "fa-solid fa-mobile-screen-button", color: "#f472b6" },
+            { key: "warden_flughelm", label: "Warden Flughelm (Faktor x18)", icon: "fa-solid fa-mask", color: "#fb923c" },
+            { key: "wisp_krone", label: "Wisp Krone (Faktor x36 + Oxid. Kupfer)", icon: "fa-solid fa-crown", color: "#eab308" }
+        ]
+    }
+];
+
+// =========================================================================
+// 2. REZEPT-DATENBANK
+// =========================================================================
 const recipes = {
-    // Basiskomponenten
     "rohling": { "Amethyst": 4, "Diamant": 4, "Weinender Obsidian": 1 },
     "platine": { "Gold": 3, "Golddurchzogener Schwarzstein": 1, "Honig": 5 },
     "transistor": { "Gold": 3, "Weinender Obsidian": 2, "Honig": 4 },
-    "energiezelle": { "Eisen": 3, "transistor": 2, "Platinen-Rest": 1 }, 
+    "energiezelle": { "platine": 1, "chipsatz": 4, "transistor": 4}, 
 
-    // Chipsatz und Terminals
     "chipsatz": { "Amethyst": 2, "Netherite": 1, "Obsidian": 1, "platine": 1, "transistor": 4 },
     "lagerterminal": { "Eisen": 3, "transistor": 2, "energiezelle": 1, "Obsidian": 3 }, 
 
-    // Speicherkarten Stufen 1 bis 4
     "speicherkarte1": { "rohling": 1, "platine": 1 },
     "speicherkarte2": { "transistor": 1, "speicherkarte1": 3 },
     "speicherkarte3": { "transistor": 2, "speicherkarte2": 3 },
     "speicherkarte4": { "transistor": 4, "speicherkarte3": 3 },
-
-    // Speicherkarten Stufen 5 bis 8
     "speicherkarte5": { "chipsatz": 4, "platine": 1, "transistor": 4 },
     "speicherkarte6": { "chipsatz": 4, "platine": 1, "speicherkarte5": 4 },
     "speicherkarte7": { "chipsatz": 4, "platine": 1, "speicherkarte6": 4 },
     "speicherkarte8": { "chipsatz": 6, "platine": 1, "speicherkarte7": 2 },
 
-    // Rubinhändler-Set
+
+    "gereinigtes_reliktfragment": { "Lapislazuli": 8, "relikt_fragment": 1 }, 
+    "vergoldetes_reliktfragment": { "relikt_fragment": 8, "Rohgoldblock": 1 }, 
+
+    "reliktscherbe": { "relikt_fragment": 8, "Diamant": 1 },
+    "formloses_relikt": { "reliktscherbe": 4 }, 
+    "reliktaltar": { "Netherite Barren": 3, "formloses_relikt": 5, "Wirrholz": 1 },
+
+    // --- Rubinhändler ---
     "rubinhaendler": {
-        "Diamantener Rossharnisch": 1,
-        "Weizenkörner (Menge)": 576,
-        "Strohballen": 128,
-        "Pilzlicht": 26,
-        "Fermentierte Spinnenaugen": 24,
-        "Geplatzte Chorusfrucht": 24,
-        "Faden": 32,
-        "Kürbiskopf": 16,
-        "Heuballen": 16
+        "Diamantener Rossharnisch": 1, "Weizenkörner (Menge)": 576, "Strohballen": 128,
+        "Pilzlicht": 26, "Fermentierte Spinnenaugen": 24, "Geplatzte Chorusfrucht": 24,
+        "Faden": 32, "Kürbiskopf": 16, "Heuballen": 16
     }
 };
 
-// Die Basisliste des Content-Apfels vom Lootdealer
 const contentApfelBasis = {
-    "Karotten": 8192,
-    "Kupferblöcke": 2048,
-    "Gebackene Kartoffeln": 8192,
-    "Giftige Kartoffeln": 1536,
-    "Diorit": 10240,
-    "Blasseichenholzbretter": 10240
+    "Karotten": 8192, "Kupferblöcke": 2048, "Gebackene Kartoffeln": 8192,
+    "Giftige Kartoffeln": 1536, "Diorit": 10240, "Blasseichenholzbretter": 10240
 };
 
-/**
- * Rekursive Funktion zur Zerlegung komplexer Rezepte
- */
+// =========================================================================
+// 3. LOGIK & APP INITIALISIERUNG
+// =========================================================================
+
+// UI beim Laden der Seite vollautomatisch aufbauen
+document.addEventListener("DOMContentLoaded", () => {
+    buildUI();
+});
+
+function buildUI() {
+    const container = document.getElementById("inputItemsContainer");
+    container.innerHTML = "";
+
+    uiStructure.forEach(cat => {
+        // Kategorieüberschrift erstellen
+        const header = document.createElement("div");
+        header.className = "category-header";
+        header.innerText = cat.category;
+        container.appendChild(header);
+
+        // Die dazugehörigen Items rendern
+        cat.items.forEach(item => {
+            const row = document.createElement("div");
+            row.className = "input-row";
+            row.innerHTML = `
+                <label><i class="${item.icon}" style="color: ${item.color};"></i> ${item.label}</label>
+                <input type="number" min="0" value="0" data-item="${item.key}" oninput="calculateTotal()">
+            `;
+            container.appendChild(row);
+        });
+    });
+}
+
 function resolveRecipe(itemName, amount, targetObject) {
     if (recipes[itemName]) {
         for (let ingredient in recipes[itemName]) {
@@ -60,13 +136,10 @@ function resolveRecipe(itemName, amount, targetObject) {
     }
 }
 
-/**
- * Hauptberechnung & HTML Generierung
- */
 function calculateTotal() {
     let totalResources = {};
 
-    // 1. Standard-Rezepte & Rubinhändler berechnen
+    // 1. Alle dynamischen Inputs auslesen, die in "recipes" definiert sind
     for (let itemKey in recipes) {
         let input = document.querySelector(`input[data-item="${itemKey}"]`);
         if (!input) continue;
@@ -77,14 +150,8 @@ function calculateTotal() {
         }
     }
 
-    // 2. Lootdealer Multiplikatoren berechnen
-    const lootdealerConfig = {
-        frosch_totem: 4,
-        uwu_phone: 8,
-        warden_flughelm: 18,
-        wisp_krone: 36
-    };
-
+    // 2. Lootdealer gesondert berechnen
+    const lootdealerConfig = { frosch_totem: 4, uwu_phone: 8, warden_flughelm: 18, wisp_krone: 36 };
     for (let key in lootdealerConfig) {
         let input = document.querySelector(`input[data-item="${key}"]`);
         if (!input) continue;
@@ -92,18 +159,16 @@ function calculateTotal() {
 
         if (amount > 0) {
             let factor = lootdealerConfig[key] * amount;
-
             for (let resName in contentApfelBasis) {
                 totalResources[resName] = (totalResources[resName] || 0) + (contentApfelBasis[resName] * factor);
             }
-
             if (key === 'wisp_krone') {
                 totalResources["Oxidierter Kupferblock"] = (totalResources["Oxidierter Kupferblock"] || 0) + (64 * amount);
             }
         }
     }
 
-    // 3. HTML DOM Generation für die Ausgabe
+    // 3. HTML Ausgabe erzeugen
     const container = document.getElementById('resultsContainer');
     container.innerHTML = '';
 
@@ -112,39 +177,31 @@ function calculateTotal() {
         return;
     }
 
-    // Ausgabe generieren mit Kisten- & Shulkerbox-Rechner (Aus der Roadmap)
     for (let resource in totalResources) {
         let count = totalResources[resource];
-
         let stacks = Math.floor(count / 64);
         let remainder = count % 64;
         let stackString = "";
 
         if (stacks >= 54) {
             let doubleChests = Math.floor(stacks / 54);
-            let remainingStacks = stacks % 54;
             stackString = `${doubleChests} Doppelkiste${doubleChests > 1 ? 'n' : ''} (${stacks} Stks)`;
         } else if (stacks >= 27) {
             let shulkers = Math.floor(stacks / 27);
-            let remainingStacks = stacks % 27;
-            stackString = `${shulkers} Shulker-Box${shulkers > 1 ? 'en' : ''} + ${remainingStacks} Stk`;
+            stackString = `${shulkers} Shulker-Box${shulkers > 1 ? 'en' : ''}`;
         } else if (stacks > 0) {
-            stackString = `${stacks} ${stacks === 1 ? 'Stack' : 'Stacks'}`;
-            if (remainder > 0) {
-                stackString += ` + ${remainder} Items`;
-            }
+            stackString = `${stacks} Stack${stacks === 1 ? '' : 's'}`;
+            if (remainder > 0) stackString += ` + ${remainder} Items`;
         } else {
             stackString = `${remainder} Items`;
         }
-
-        let formattedCount = count.toLocaleString('de-DE');
 
         let row = document.createElement('div');
         row.className = 'result-row';
         row.innerHTML = `
             <div class="result-item-name">${resource}</div>
             <div class="result-amounts">
-                <span class="count-total">${formattedCount}x</span>
+                <span class="count-total">${count.toLocaleString('de-DE')}x</span>
                 <span class="count-stacks">${stackString}</span>
             </div>
         `;
@@ -152,35 +209,19 @@ function calculateTotal() {
     }
 }
 
-/**
- * Alles auf 0 zurücksetzen
- */
 function resetAll() {
     document.querySelectorAll('.input-row input').forEach(input => input.value = 0);
     calculateTotal();
 }
 
-/**
- * In die Zwischenablage kopieren (Formatiert für Discord/Ingame-Chat)
- */
 function copyToClipboard() {
     const rows = document.querySelectorAll('.result-row');
-    if (rows.length === 0) {
-        alert("Es gibt noch keine Materialien zum Kopieren!");
-        return;
-    }
+    if (rows.length === 0) return alert("Keine Materialien vorhanden!");
     
-    let text = "📋 **Benötigte Materialien für Primeblocks:**\n";
+    let text = "📋 **Benötigte Materialien:**\n";
     rows.forEach(row => {
-        let name = row.querySelector('.result-item-name').innerText;
-        let total = row.querySelector('.count-total').innerText;
-        let stacks = row.querySelector('.count-stacks').innerText;
-        text += `- ${name}: ${total} (${stacks})\n`;
+        text += `- ${row.querySelector('.result-item-name').innerText}: ${row.querySelector('.count-total').innerText} (${row.querySelector('.count-stacks').innerText})\n`;
     });
     
-    navigator.clipboard.writeText(text).then(() => {
-        alert("Einkaufsliste wurde in die Zwischenablage kopiert!");
-    }).catch(err => {
-        console.error('Fehler beim Kopieren: ', err);
-    });
+    navigator.clipboard.writeText(text).then(() => alert("Einkaufsliste kopiert!"));
 }

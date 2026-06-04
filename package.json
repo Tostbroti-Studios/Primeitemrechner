@@ -1,0 +1,15 @@
+{
+  "name": "primeitemrechner",
+  "version": "1.0.0",
+  "description": "Primeblocks Ressourcen-Rechner - A Minecraft resource calculator",
+  "private": true,
+  "scripts": {
+    "install-analytics": "npm install @vercel/analytics"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/analytics": "^1.4.1"
+  }
+}

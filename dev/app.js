@@ -19,7 +19,8 @@ const uiStructure = [
             { key: "speicherkarte5", label: "Präzise Speicherkarte (64.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
             { key: "speicherkarte6", label: "Optimierte Speicherkarte (128.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
             { key: "speicherkarte7", label: "Hochgeschwindikeits Speicherkarte (192.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
-            { key: "speicherkarte8", label: "Ultimative Speicherkarte (256.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" }
+            { key: "speicherkarte8", label: "Ultimative Speicherkarte (256.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "apexspeicherkarte", label: "Apex Speicherkarte (1.024.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" }
         ]
     },
     {
@@ -69,6 +70,7 @@ const recipes = {
     "speicherkarte6": { "chipsatz": 4, "platine": 1, "speicherkarte5": 4 },
     "speicherkarte7": { "chipsatz": 4, "platine": 1, "speicherkarte6": 4 },
     "speicherkarte8": { "chipsatz": 6, "platine": 1, "speicherkarte7": 2 },
+    "apexspeicherkarte": { "chipsatz": 6, "platine": 1, "Gamma Speicherkarte": 2 },
 
 
     "gereinigtes_reliktfragment": { "Lapislazuli": 8, "Reliktfragment": 1 }, 

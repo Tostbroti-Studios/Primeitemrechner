@@ -6,7 +6,9 @@ const uiStructure = [
         category: "Teile & Terminals",
         items: [
             { key: "chipsatz", label: "Chipsatz", icon: "fa-solid fa-microchip", color: "#38bdf8" },
-            { key: "lagerterminal", label: "Lagerterminal", icon: "fa-solid fa-terminal", color: "#a855f7" }
+            { key: "lagerterminal", label: "Lagerterminal", icon: "fa-solid fa-terminal", color: "#a855f7" },
+            { key: "encodierterminal", label: "Enkodierterminal", icon: "fa-solid fa-terminal", color: "#a855f7" },
+            { key: "clanterminal", label: "Enkodierterminal", icon: "fa-solid fa-terminal", color: "#a855f7" }
         ]
     },
     {
@@ -61,7 +63,9 @@ const recipes = {
     "energiezelle": { "platine": 1, "chipsatz": 4, "transistor": 4}, 
 
     "chipsatz": { "Amethyst": 2, "Netherite": 1, "Obsidian": 1, "platine": 1, "transistor": 4 },
-    "lagerterminal": { "Eisen": 3, "transistor": 2, "energiezelle": 1, "Obsidian": 3 }, 
+    "lagerterminal": { "Eisen": 3, "transistor": 2, "energiezelle": 1, "Obsidian": 3 },
+    "encodierterminal": { "Gold": 3, "Obsidian": 3, "chipsatz": 2, "energiezelle": 1},
+    "clanterminal": { "Eisen": 3, "transistor": 2, "Rubin Energiezelle": 1, "Obsidian": 1}, 
 
     "speicherkarte1": { "rohling": 1, "platine": 1 },
     "speicherkarte2": { "transistor": 1, "speicherkarte1": 3 },

@@ -12,14 +12,14 @@ const uiStructure = [
     {
         category: "Speicherkarten",
         items: [
-            { key: "speicherkarte1", label: "Speicherkarte A", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
-            { key: "speicherkarte2", label: "Speicherkarte B", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
-            { key: "speicherkarte3", label: "Speicherkarte C", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
-            { key: "speicherkarte4", label: "Speicherkarte D", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
-            { key: "speicherkarte5", label: "Speicherkarte 1A", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
-            { key: "speicherkarte6", label: "Speicherkarte 1B", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
-            { key: "speicherkarte7", label: "Speicherkarte 1C", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
-            { key: "speicherkarte8", label: "Speicherkarte 1D", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" }
+            { key: "speicherkarte1", label: "Einfache Speicherkarte (4.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte2", label: "Stabile Speicherkarte (8.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte3", label: "Erweiterte Speicherkarte (16.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte4", label: "Verstärkte Speicherkarte (32.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte5", label: "Präzise Speicherkarte (64.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte6", label: "Optimierte Speicherkarte (128.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte7", label: "Hochgeschwindikeits Speicherkarte (192.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" },
+            { key: "speicherkarte8", label: "Ultimative Speicherkarte (256.000 Items)", icon: "fa-regular fa-floppy-disk", color: "#60a5fa" }
         ]
     },
     {

@@ -63,7 +63,7 @@ const uiStructure = [
 const recipes = {
     "rohling": { "Amethyst": 4, "Diamant": 4, "Weinender Obsidian": 1 },
     "platine": { "Gold": 3, "Golddurchzogener Schwarzstein": 1, "Honig": 5 },
-    "transistor": { "Gold": 3, "Weinender Obsidian": 2, "Honig": 4 },
+    "transistor": { "Gold": 3, "Obsidian": 2, "Honig": 4 },
     "energiezelle": { "platine": 1, "chipsatz": 4, "transistor": 4}, 
 
     "chipsatz": { "Amethyst": 2, "Netherite": 1, "Obsidian": 1, "platine": 1, "transistor": 4 },

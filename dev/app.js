@@ -5,14 +5,14 @@ const uiStructure = [
     {
         category: "Teile & Terminals",
         items: [
-            { key: "chipsatz", label: "Chipsatz", icon: "fa-solid fa-microchip", color: "#38bdf8" },
-            { key: "platine", label: "Platine", icon: "fa-solid fa-microchip", color: "#38bdf8" },
+            { key: "chipsatz", label: "Chipsatz", icon: "fa-solid fa-microchip", color: "#275b72" },
+            { key: "platine", label: "Platine", icon: "fa-solid fa-microchip", color: "#1b8b04" },
             { key: "rohling", label: "Rohling", icon: "fa-solid fa-compact-disc", color: "#ffffff" },
             { key: "energiezelle", label: "Energiezelle", icon: "fa-solid fa-battery-5", color: "#38bdf8" },
-            { key: "transistor", label: "Transistoren", icon: "fa-solid fa-microchip", color: "#38bdf8" },
+            { key: "transistor", label: "Transistoren", icon: "fa-solid fa-microchip", color: "#275b72" },
             { key: "lagerterminal", label: "Lagerterminal", icon: "fa-solid fa-computer", color: "#1b8b04" },
             { key: "encodierterminal", label: "Enkodierterminal", icon: "fa-solid fa-laptop-code", color: "#1b8b04" },
-            { key: "clanterminal", label: "Clanterminal", icon: "fa-solid fa-people-group", color: "#1b8b04" }
+            { key: "clanterminal", label: "Clanterminal", icon: "fa-solid fa-people-group", color: "#ff0000" }
         ]
     },
     {

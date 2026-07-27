@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Minecraft Citybuild Plot Planner (Mobile Optimized)</title>
+  <style>
+    :root {
+      --bg-dark: #12181b;
+      --card-bg: #1e272c;
+      --accent: #2ecc71;
+      --accent-hover: #27ae60;
+      --danger: #e74c3c;
+      --text: #f5f6fa;
+      --text-muted: #a4b0be;
+      --border: #2c3e50;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text);
+      display: flex;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      flex-direction: row;
+    }
+
+    /* Sidebar Layout */
+    .sidebar {
+      width: 340px;
+      background-color: var(--card-bg);
+      border-right: 1px solid var(--border);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      z-index: 10;
+      box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+      overflow-y: auto;
+    }
+
+    .title-box h1 {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 2px;
+    }
+
+    .title-box p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Stats Cards */
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .stat-card {
+      background: rgba(0, 0, 0, 0.2);
+      border-left: 3px solid var(--accent);
+      padding: 8px 10px;
+      border-radius: 4px;
+    }
+
+    .stat-card.full-width {
+      grid-column: span 2;
+    }
+
+    .stat-card .label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .stat-card .value {
+      font-size: 1.05rem;
+      font-weight: bold;
+      margin-top: 2px;
+      color: #fff;
+    }
+
+    .stat-card .sub-value {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    /* Action Buttons */
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .btn {
+      background-color: #2c3e50;
+      color: var(--text);
+      border: none;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.8rem;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 42px; /* Touch-friendly size */
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-danger {
+      background-color: #c0392b;
+    }
+
+    .btn-full {
+      grid-column: span 2;
+    }
+
+    /* Mobile Mode Toggle Switcher */
+    .mode-selector {
+      display: none; /* Nur auf Mobilgeräten sichtbar / Only visible on mobile */
+      background: #12181b;
+      padding: 4px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      grid-template-columns: 1fr 1fr;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .mode-btn.active {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* Main View Area */
+    .main-view {
+      flex: 1;
+      position: relative;
+      background-color: #0b0e10;
+      touch-action: none; /* Verhindert natives Scrollen/Pinch-Zoom des Browsers / Prevents native browser scrolling */
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .canvas-hint {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.75);
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      pointer-events: none;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Responsive Breakpoint für Smartphones */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column-reverse;
+      }
+
+      .sidebar {
+        width: 100%;
+        max-height: 42dvh;
+        border-right: none;
+        border-top: 1px solid var(--border);
+        padding: 12px;
+        gap: 10px;
+      }
+
+      .title-box {
+        display: none; /* Platz sparen auf kleinen Bildschirmen / Save space on small screens */
+      }
+
+      .mode-selector {
+        display: grid;
+      }
+
+      .stats-container {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .stat-card.full-width {
+        grid-column: span 2;
+      }
+
+      .stat-card .value {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="title-box">
+      <h1>Citybuild Planer</h1>
+      <p>43×43 Plots | 25 Blöcke Straßen</p>
+    </div>
+
+    <!-- Mobile Touch Modus Schalter -->
+    <div class="mode-selector" id="mode-selector">
+      <button class="mode-btn active" id="mode-draw" data-mode="draw">✏️ Zeichnen</button>
+      <button class="mode-btn" id="mode-pan" data-mode="pan">✋ Bewegen</button>
+    </div>
+
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="label">Plots</div>
+        <div class="value" id="stat-count">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Umfang</div>
+        <div class="value" id="stat-perimeter">0m</div>
+      </div>
+      <div class="stat-card full-width">
+        <div class="label">Reine Plot-Fläche</div>
+        <div class="value" id="stat-plot-area">0 m²</div>
+      </div>
+      <div class="stat-card full-width">
+        <div class="label">Gesamtfläche (inkl. Straßen)</div>
+        <div class="value" id="stat-total-area">0 m²</div>
+      </div>
+    </div>
+
+    <div class="controls-grid">
+      <button class="btn" id="btn-zoom-in">➕ Zoom+</button>
+      <button class="btn" id="btn-zoom-out">➖ Zoom-</button>
+      <button class="btn" id="btn-reset-view">🎯 Zentrum</button>
+      <button class="btn btn-danger" id="btn-clear-selection">🧹 Leeren</button>
+    </div>
+  </aside>
+
+  <main class="main-view" id="canvas-container">
+    <canvas id="gridCanvas"></canvas>
+    <div class="canvas-hint" id="canvas-hint-text">Tippen zum Markieren</div>
+  </main>
+
+  <script>
+    const PLOT_SIZE = 43;
+    const ROAD_SIZE = 25;
+    const GRID_DIM = 20;
+    const STORAGE_KEY = 'cb_planner_selected_plots_v2';
+
+    let selectedPlots = new Set();
+    let scale = 1.0;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    let activeTouchMode = 'draw'; // 'draw' oder 'pan' auf Mobile
+    let pointers = new Map();     // Multi-Touch Tracking für Pinch-Zoom
+    let isInteracting = false;
+    let dragMode = null;
+    let lastPinchDist = null;
+
+    const canvas = document.getElementById('gridCanvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('canvas-container');
+
+    function loadSelection() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) selectedPlots = new Set(JSON.parse(saved));
+      } catch (e) {}
+    }
+
+    function saveSelection() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...selectedPlots]));
+      } catch (e) {}
+    }
+
+    function resizeCanvas() {
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
+      draw();
+    }
+
+    function centerCamera() {
+      const totalCellWidth = PLOT_SIZE + ROAD_SIZE;
+      const totalGridPixelWidth = GRID_DIM * totalCellWidth;
+      
+      scale = canvas.width / (totalGridPixelWidth * 0.75);
+      scale = Math.min(Math.max(scale, 0.3), 3.0);
+
+      offsetX = (canvas.width - totalGridPixelWidth * scale) / 2;
+      offsetY = (canvas.height - totalGridPixelWidth * scale) / 2;
+      draw();
+    }
+
+    function screenToGrid(screenX, screenY) {
+      const worldX = (screenX - offsetX) / scale;
+      const worldY = (screenY - offsetY) / scale;
+      const cellSize = PLOT_SIZE + ROAD_SIZE;
+
+      const gx = Math.floor(worldX / cellSize);
+      const gy = Math.floor(worldY / cellSize);
+
+      if (gx < 0 || gx >= GRID_DIM || gy < 0 || gy >= GRID_DIM) return null;
+
+      const localX = worldX - (gx * cellSize);
+      const localY = worldY - (gy * cellSize);
+
+      if (localX <= PLOT_SIZE && localY <= PLOT_SIZE) {
+        return { x: gx, y: gy, key: `${gx},${gy}` };
+      }
+      return null;
+    }
+
+    function calculateStats() {
+      const count = selectedPlots.size;
+      const purePlotArea = count * PLOT_SIZE * PLOT_SIZE;
+      if (count === 0) return { count: 0, purePlotArea: 0, totalArea: 0, perimeter: 0 };
+
+      let sharedEdgesCount = 0;
+      let mergedIntersections = 0;
+
+      selectedPlots.forEach(key => {
+        const [x, y] = key.split(',').map(Number);
+        if (selectedPlots.has(`${x + 1},${y}`)) sharedEdgesCount++;
+        if (selectedPlots.has(`${x},${y + 1}`)) sharedEdgesCount++;
+
+        if (
+          selectedPlots.has(`${x + 1},${y}`) &&
+          selectedPlots.has(`${x},${y + 1}`) &&
+          selectedPlots.has(`${x + 1},${y + 1}`)
+        ) {
+          mergedIntersections++;
+        }
+      });
+
+      const roadSegmentArea = PLOT_SIZE * ROAD_SIZE;
+      const intersectionArea = ROAD_SIZE * ROAD_SIZE;
+      const totalArea = purePlotArea + (sharedEdgesCount * roadSegmentArea) + (mergedIntersections * intersectionArea);
+
+      let perimeter = 0;
+      selectedPlots.forEach(key => {
+        const [x, y] = key.split(',').map(Number);
+        const top = !selectedPlots.has(`${x},${y - 1}`);
+        const bottom = !selectedPlots.has(`${x},${y + 1}`);
+        const left = !selectedPlots.has(`${x - 1},${y}`);
+        const right = !selectedPlots.has(`${x + 1},${y}`);
+
+        if (top) perimeter += PLOT_SIZE + (selectedPlots.has(`${x + 1},${y}`) ? ROAD_SIZE : 0);
+        if (bottom) perimeter += PLOT_SIZE + (selectedPlots.has(`${x + 1},${y}`) ? ROAD_SIZE : 0);
+        if (left) perimeter += PLOT_SIZE + (selectedPlots.has(`${x},${y + 1}`) ? ROAD_SIZE : 0);
+        if (right) perimeter += PLOT_SIZE + (selectedPlots.has(`${x},${y + 1}`) ? ROAD_SIZE : 0);
+      });
+
+      return { count, purePlotArea, totalArea, perimeter };
+    }
+
+    function updateUI() {
+      const stats = calculateStats();
+      document.getElementById('stat-count').innerText = stats.count;
+      document.getElementById('stat-plot-area').innerText = stats.purePlotArea.toLocaleString('de-DE') + ' m²';
+      document.getElementById('stat-total-area').innerText = stats.totalArea.toLocaleString('de-DE') + ' m²';
+      document.getElementById('stat-perimeter').innerText = stats.perimeter.toLocaleString('de-DE') + ' m';
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.translate(offsetX, offsetY);
+      ctx.scale(scale, scale);
+
+      const cellSize = PLOT_SIZE + ROAD_SIZE;
+
+      // Straße
+      ctx.fillStyle = '#2c3e50';
+      const fullGridPixelSize = GRID_DIM * cellSize - ROAD_SIZE;
+      ctx.fillRect(0, 0, fullGridPixelSize, fullGridPixelSize);
+
+      // Plots
+      for (let x = 0; x < GRID_DIM; x++) {
+        for (let y = 0; y < GRID_DIM; y++) {
+          const key = `${x},${y}`;
+          const isSelected = selectedPlots.has(key);
+          const px = x * cellSize;
+          const py = y * cellSize;
+
+          ctx.fillStyle = isSelected ? '#2ecc71' : '#34495e';
+          ctx.fillRect(px, py, PLOT_SIZE, PLOT_SIZE);
+
+          if (!isSelected) {
+            ctx.strokeStyle = '#455a64';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(px, py, PLOT_SIZE, PLOT_SIZE);
+          }
+        }
+      }
+
+      // Merge Straßenübermalung
+      selectedPlots.forEach(key => {
+        const [x, y] = key.split(',').map(Number);
+        const px = x * cellSize;
+        const py = y * cellSize;
+
+        if (selectedPlots.has(`${x + 1},${y}`)) {
+          ctx.fillStyle = '#2ecc71';
+          ctx.fillRect(px + PLOT_SIZE, py, ROAD_SIZE, PLOT_SIZE);
+        }
+        if (selectedPlots.has(`${x},${y + 1}`)) {
+          ctx.fillStyle = '#2ecc71';
+          ctx.fillRect(px, py + PLOT_SIZE, PLOT_SIZE, ROAD_SIZE);
+        }
+        if (
+          selectedPlots.has(`${x + 1},${y}`) &&
+          selectedPlots.has(`${x},${y + 1}`) &&
+          selectedPlots.has(`${x + 1},${y + 1}`)
+        ) {
+          ctx.fillStyle = '#2ecc71';
+          ctx.fillRect(px + PLOT_SIZE, py + PLOT_SIZE, ROAD_SIZE, ROAD_SIZE);
+        }
+      });
+
+      if (scale > 0.5) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.font = '10px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        for (let x = 0; x < GRID_DIM; x++) {
+          for (let y = 0; y < GRID_DIM; y++) {
+            ctx.fillText(`${x+1}:${y+1}`, x * cellSize + PLOT_SIZE / 2, y * cellSize + PLOT_SIZE / 2);
+          }
+        }
+      }
+
+      ctx.restore();
+    }
+
+    // --- POINTER EVENT LOGIC (UNIFIED MOUSE & TOUCH) ---
+
+    canvas.addEventListener('pointerdown', (e) => {
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      // Pinch-Zoom Erkennung bei 2 Fingern / Pinch-zoom detection with 2 fingers
+      if (pointers.size === 2) {
+        isInteracting = false;
+        lastPinchDist = getPinchDistance();
+        return;
+      }
+
+      // Rechtsklick oder Panning-Modus / Right click or pan mode
+      if (e.button === 2 || e.button === 1 || activeTouchMode === 'pan') {
+        isInteracting = 'pan';
+        return;
+      }
+
+      // Zeichnen-Modus / Draw mode
+      if (e.button === 0 && activeTouchMode === 'draw') {
+        const rect = canvas.getBoundingClientRect();
+        const plot = screenToGrid(e.clientX - rect.left, e.clientY - rect.top);
+        if (plot) {
+          isInteracting = 'draw';
+          dragMode = selectedPlots.has(plot.key) ? 'deselect' : 'select';
+          togglePlot(plot.key, dragMode);
+        } else {
+          isInteracting = 'pan'; // Fallback auf Panning auf Straßen
+        }
+      }
+    });
+
+    canvas.addEventListener('pointermove', (e) => {
+      if (!pointers.has(e.pointerId)) return;
+      const prevPos = pointers.get(e.pointerId);
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+      // 1. Zwei-Finger Pinch Zoom & Pan
+      if (pointers.size === 2) {
+        const currentDist = getPinchDistance();
+        if (lastPinchDist && currentDist) {
+          const factor = currentDist / lastPinchDist;
+          let newScale = Math.min(Math.max(scale * factor, 0.3), 3.0);
+          
+          const rect = canvas.getBoundingClientRect();
+          const pArray = Array.from(pointers.values());
+          const midX = (pArray[0].x + pArray[1].x) / 2 - rect.left;
+          const midY = (pArray[0].y + pArray[1].y) / 2 - rect.top;
+
+          offsetX = midX - (midX - offsetX) * (newScale / scale);
+          offsetY = midY - (midY - offsetY) * (newScale / scale);
+          scale = newScale;
+          draw();
+        }
+        lastPinchDist = currentDist;
+        return;
+      }
+
+      // 2. Einfinger Panning oder Zeichnen
+      const dx = e.clientX - prevPos.x;
+      const dy = e.clientY - prevPos.y;
+
+      if (isInteracting === 'pan') {
+        offsetX += dx;
+        offsetY += dy;
+        draw();
+      } else if (isInteracting === 'draw') {
+        const rect = canvas.getBoundingClientRect();
+        const plot = screenToGrid(e.clientX - rect.left, e.clientY - rect.top);
+        if (plot) {
+          togglePlot(plot.key, dragMode);
+        }
+      }
+    });
+
+    function handlePointerEnd(e) {
+      pointers.delete(e.pointerId);
+      if (pointers.size < 2) lastPinchDist = null;
+      if (pointers.size === 0) {
+        isInteracting = false;
+        dragMode = null;
+      }
+    }
+
+    canvas.addEventListener('pointerup', handlePointerEnd);
+    canvas.addEventListener('pointercancel', handlePointerEnd);
+    canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+    function getPinchDistance() {
+      const p = Array.from(pointers.values());
+      if (p.length < 2) return null;
+      return Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y);
+    }
+
+    function togglePlot(key, mode) {
+      let changed = false;
+      if (mode === 'select' && !selectedPlots.has(key)) {
+        selectedPlots.add(key);
+        changed = true;
+      } else if (mode === 'deselect' && selectedPlots.has(key)) {
+        selectedPlots.delete(key);
+        changed = true;
+      }
+      if (changed) {
+        saveSelection();
+        updateUI();
+        draw();
+      }
+    }
+
+    // Mausrad Zoom / Mouse wheel zoom
+    canvas.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomFactor = 1.1;
+      const rect = canvas.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      let newScale = e.deltaY < 0 ? scale * zoomFactor : scale / zoomFactor;
+      newScale = Math.min(Math.max(newScale, 0.3), 3.0);
+
+      offsetX = mouseX - (mouseX - offsetX) * (newScale / scale);
+      offsetY = mouseY - (mouseY - offsetY) * (newScale / scale);
+      scale = newScale;
+      draw();
+    }, { passive: false });
+
+    // Mobile Modus Umschalter (Zeichnen / Panning)
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        activeTouchMode = e.target.dataset.mode;
+        document.getElementById('canvas-hint-text').innerText = 
+          activeTouchMode === 'draw' ? 'Tippen/Wischen zum Markieren' : 'Wischen zum Verschieben';
+      });
+    });
+
+    // UI Buttons
+    document.getElementById('btn-zoom-in').addEventListener('click', () => { scale = Math.min(scale * 1.25, 3.0); draw(); });
+    document.getElementById('btn-zoom-out').addEventListener('click', () => { scale = Math.max(scale / 1.25, 0.3); draw(); });
+    document.getElementById('btn-reset-view').addEventListener('click', centerCamera);
+    document.getElementById('btn-clear-selection').addEventListener('click', () => {
+      if (selectedPlots.size > 0) {
+        selectedPlots.clear();
+        saveSelection();
+        updateUI();
+        draw();
+      }
+    });
+
+    window.addEventListener('resize', resizeCanvas);
+
+    // Init
+    loadSelection();
+    resizeCanvas();
+    centerCamera();
+    updateUI();
+  </script>
+</body>
+</html>
